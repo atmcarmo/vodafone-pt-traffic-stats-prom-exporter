@@ -1,0 +1,17 @@
+version: '3.8'
+
+networks:
+  monitoring:
+    driver: bridge
+
+services:
+  exporter:
+    build: .
+    container_name: exporter
+    restart: unless-stopped # restarts container on boot and on failure, unless manually stopped.
+    env_file:
+      - .env
+    ports:
+      - "8081:8081"
+    networks:
+      - monitoring
