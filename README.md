@@ -1,6 +1,16 @@
-Prometheus exporter that gets traffic statistics for Vodafone Portugal HG8247X6-8N WIFI 6 router and exposes them for Prometheus to scrape
+Prometheus exporter that gets traffic statistics for Vodafone Portugal HG8247X6-8N WIFI 6 router and exposes them for Prometheus to scrape it.
 
-This is intended for portuguese users so I'll start explaining it in Portugal. You can find the english version down bellow.
+This is intended for portuguese users so I'll start explaining it in Portugal. You can find the english version down below.
+
+The following metrics are exported:
+- `vodafone_wan_up_bytes_total`: total bytes uploaded/transmited for WAN (internet)
+- `vodafone_wan_down_bytes_total`: total bytes downloaded/recieved for WAN (internet)
+- `vodafone_lan<X>_up_bytes_total`: where `<X>` can be LAN1-LAN4. Total bytes uploaded/transmitted
+- `vodafone_lan<X>_up_bytes_total`: where `<X>` can be LAN1-LAN4. Total bytes downloaded/recieved
+- `vodafone_wifi_2_4ghz_down_bytes_total`: total bytes downloaded/recieved for Wifi 2.4GHz
+- `vodafone_wifi_2_4ghz_up_bytes_total`: total bytes uploaded/transmited for Wifi 2.4GHz
+- `vodafone_wifi_5ghz_down_bytes_total`: total bytes downloaded/recieved for Wifi 5GHz
+- `vodafone_wifi_5ghz_up_bytes_total`: total bytes uploaded/transmited for Wifi 5GHz
 
 # Português
 
@@ -26,11 +36,18 @@ Ter docker e docker compose instalados.
 
 ## Como Utilizar
 
-Criar um ficheiro `.env` equivalente a `.env.example` com as configurações, incluindo username e password. Depois executar:
+Criar um ficheiro `.env` equivalente a `.env.example` com as configurações. As seguintes variáveis estão disponíveis:
+- `ROUTER_HOST`: IP do Router
+- `ROUTER_USERNAME`: username do router
+- `ROUTER_PASSWORD`: password do router em plain text (don't worry, não sai da vossa máquina)
+- `POLLING_INTERVAL_SECONDS`: o tempo de intervalo em que o exporter vai buscar os dados ao router. Este valor não deve ser baixo para não estarmos a fazer uma espécie de DDoS ao router. Fazer login no router pode aumentar ligeiramente a latência de resposta do router. Recomendo não usar menos do que 60 segundos.
+- `EXPORTER_PORT`: a porta onde o exporter expõe as métricas (by default 8081)
 
-`docker-compose up -d`
+ Depois executar `docker-compose up -d`. As métricas podem ser consultadas manualmente ou lidas pelo Prometheus em `<ip>:8081`. Exemplo: `127.0.0.1:8081`.
 
-As métricas podem ser consultadas manualmente ou lidas pelo Prometheus em `<ip>:8081`. Exemplo: `127.0.0.1:8081`.
+## Problemas
+
+ Um dos problemas é o contador da WAN/internet usar um int de 32 bits. Este int é reset para 0 quando atinge o max int. Como este exporter vai buscar os dados com polling significa que podemos perder dados quando o contador faz reset. Infelizmente o router não parece guardar um multiplicador como faz para a as portas LAN e Wifi.
 
 ## Trabalho futuro:
 
