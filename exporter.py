@@ -101,35 +101,31 @@ class VodafoneMetrics:
         )
 
         html=page.content.decode(page.apparent_encoding).encode().decode("unicode_escape")
-
-        # aperently the way LAN statistics for each port are reset at this max int number
-        # then, they are multiplied by the multiplier and finally they add the current bytes statistics
-        max_int = 4294967296
  
         # TODO: this needs to be improved. I literaly hardcoded the regex and copy and pasted the calculations for each LAN port.
         #lan1
         regexLan1=r"InternetGatewayDevice\.X_HW_DEBUG\.AMP\.LANPort\.1\.Statistics\D+(\d+)\D+(\d+)\"(?:\,\"\d+\"){4}\D+(\d+)\D+(\d+)"
         matchesLan1 = re.search(regexLan1,html)
         self.lan1_bytes_up._value.set(self.get_lan_bytes_up(matchesLan1))
-        self.lan1_bytes_down._value.set(self.get_down_bytes_up(matchesLan1))
+        self.lan1_bytes_down._value.set(self.get_lan_bytes_down(matchesLan1))
 
         #lan2
         regexLan2=r"InternetGatewayDevice\.X_HW_DEBUG\.AMP\.LANPort\.2\.Statistics\D+(\d+)\D+(\d+)\"(?:\,\"\d+\"){4}\D+(\d+)\D+(\d+)"
         matchesLan2 = re.search(regexLan2,html)
         self.lan2_bytes_up._value.set(self.get_lan_bytes_up(matchesLan2))
-        self.lan2_bytes_down._value.set(self.get_down_bytes_up(matchesLan2))
+        self.lan2_bytes_down._value.set(self.get_lan_bytes_down(matchesLan2))
 
         #lan3
         regexLan3=r"InternetGatewayDevice\.X_HW_DEBUG\.AMP\.LANPort\.3\.Statistics\D+(\d+)\D+(\d+)\"(?:\,\"\d+\"){4}\D+(\d+)\D+(\d+)"
         matchesLan3 = re.search(regexLan3,html)
         self.lan3_bytes_up._value.set(self.get_lan_bytes_up(matchesLan3))
-        self.lan3_bytes_down._value.set(self.get_down_bytes_up(matchesLan3))
+        self.lan3_bytes_down._value.set(self.get_lan_bytes_down(matchesLan3))
 
         #lan3
         regexLan4=r"InternetGatewayDevice\.X_HW_DEBUG\.AMP\.LANPort\.4\.Statistics\D+(\d+)\D+(\d+)\"(?:\,\"\d+\"){4}\D+(\d+)\D+(\d+)"
         matchesLan4 = re.search(regexLan4,html)
         self.lan4_bytes_up._value.set(self.get_lan_bytes_up(matchesLan4))
-        self.lan4_bytes_down._value.set(self.get_down_bytes_up(matchesLan4))
+        self.lan4_bytes_down._value.set(self.get_lan_bytes_down(matchesLan4))
 
         self.fetch_wlan(html)
 
@@ -166,7 +162,7 @@ class VodafoneMetrics:
 
         return lan_up_final_bytes
     
-    def get_down_bytes_up(self, matchesLan):
+    def get_lan_bytes_down(self, matchesLan):
         """
         Gets the LAN bytes for downstream
         """
