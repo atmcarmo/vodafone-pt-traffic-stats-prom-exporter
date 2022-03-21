@@ -5,6 +5,7 @@ import time
 import requests
 import re
 from prometheus_client import start_http_server, Counter
+from distutils.util import strtobool
 
 class VodafoneMetrics:
     """
@@ -21,6 +22,18 @@ class VodafoneMetrics:
         self.host = os.environ.get('ROUTER_HOST')
         self.username = os.environ.get('ROUTER_USERNAME')
         self.password = os.environ.get('ROUTER_PASSWORD')
+        try:
+            self.use_wan_multipler = not bool(strtobool(os.environ.get("DISABLE_WAN_MULTIPLER")))
+        except:
+            self.use_wan_multipler = True
+
+        # this is a multipler to try to fix the problem that happens when the LAN bytes achieve MAX INT and then reset to 0. 
+        # while for LAN or WLAN the router itself has this counter, for WAN it doesn't have so we are basically manipulating here the raw values the router gives us
+        self.wan_up_multiplier = 1
+        self.wan_down_multiplier = 1
+        # the previous values for WAN so that we can increment the multipler while comparing to the current raw value
+        self.wan_up_previous_value = 0
+        self.wan_down_previous_value = 0
 
         # Prometheus metrics to collect
         self.wan_bytes_up = Counter(self.build_counter_metric("wan", "up"), "Total bytes upload")
@@ -84,12 +97,24 @@ class VodafoneMetrics:
  
         regex=r"InternetGatewayDevice\.WANDevice\.1\.WANConnectionDevice\.1\.WANIPConnection\.1\.Stats\"\,\"\d+\"\,\"(\d+)\"\,\"\d+\"\,\"\d+\"\,\"\d+\"\,\"(\d+)"
         matches = re.search(regex,html)
-        up = matches.groups()[0]
-        down = matches.groups()[1]
+        up_raw = int(matches.groups()[0])
+        down_raw = int(matches.groups()[1])
+
+        # if we find that the current value is less than the previous value it means it reached max int in the router and we increment our own multipler
+        # this may help but with a fast enough connection it may reach max int several times between each time the exporter runs
+        # if that's the case the multipler will only increment by one time and we have no way of knowing that
+        if (self.use_wan_multipler):
+            if (up_raw < self.wan_up_previous_value):
+                self.wan_up_multiplier += 1
+                self.wan_up_previous_value = up_raw
+
+            if (down_raw < self.wan_down_previous_value):
+                self.wan_down_multiplier += 1
+                self.wan_down_previous_value = down_raw
 
         # Update Prometheus metrics with application metrics
-        self.wan_bytes_up._value.set(int(up))
-        self.wan_bytes_down._value.set(int(down))
+        self.wan_bytes_up._value.set(up_raw * self.wan_up_multiplier)
+        self.wan_bytes_down._value.set(down_raw * self.wan_down_multiplier)
 
     def fetch_lan(self, cookie):
         """

@@ -47,7 +47,11 @@ Criar um ficheiro `.env` equivalente a `.env.example` com as configurações. As
 
 ## Problemas
 
- Um dos problemas é o contador da WAN/internet usar um int de 32 bits. Este int é reset para 0 quando atinge o max int. Como este exporter vai buscar os dados com polling significa que podemos perder dados quando o contador faz reset. Infelizmente o router não parece guardar um multiplicador como faz para a as portas LAN e Wifi.
+ Um dos problemas é o contador da WAN/internet usar um `int` de 32 bits. Este `int` é reset para 0 quando atinge o max int. Como este exporter vai buscar os dados com polling significa que podemos perder dados quando o contador faz reset. Infelizmente o router não parece guardar um multiplicador como faz para a as portas LAN e Wifi. Foi adicionado uma lógica que tenta adivinhar quando o contador foi restaurado para 0 e incrementa um multiplicador. Quando é detectado que o actual valor é inferior ao anterior quer quer dizer que o contador foi reiniciado e então é incrementado esse multiplicador. Isto pode ter dois problemas:
+ - Se a ligação foi rápida o suficiente o contador pode ser restaurado mais do que uma vez (se forem downloaded muitos dados num curto espaço de tempo) e é impossível saber isso. A única solução é baixar o tempo de polling (o que desaconselho ser menos de 30 segundos)
+ - Se por algum motivo o contador for manualmente reiniciado na UI ou se o router sofrer algum bug ou for reiniciado isso pode ser interpretado como um aumento de cerca de 4GB de dados (o multiplicador é incrementado).
+
+ Para desactivar este multipliacdor é possível usar no `.env` a opção `DISABLE_WAN_MULTIPLER=true`.
 
 ## Trabalho futuro:
 
