@@ -1,0 +1,809 @@
+{
+    "__inputs": [],
+    "__requires": [
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "8.2.6"
+      },
+      {
+        "type": "panel",
+        "id": "piechart",
+        "name": "Pie chart",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "timeseries",
+        "name": "Time series",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 4,
+          "x": 0,
+          "y": 0
+        },
+        "id": 20,
+        "interval": null,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.6",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_wan_down_bytes_total[$__range])",
+            "interval": "",
+            "legendFormat": "Down",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_wan_up_bytes_total[$__range])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Up",
+            "refId": "B"
+          }
+        ],
+        "title": "WAN Traffic",
+        "type": "piechart"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 20,
+          "x": 4,
+          "y": 0
+        },
+        "id": 2,
+        "interval": "5m",
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_wan_down_bytes_total[$__rate_interval])",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "Down",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_wan_up_bytes_total[$__rate_interval])",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Up",
+            "refId": "B"
+          }
+        ],
+        "timeFrom": null,
+        "title": "WAN (5m)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 6
+        },
+        "id": 8,
+        "interval": "5m",
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan1_down_bytes_total[5m])",
+            "interval": "",
+            "legendFormat": "LAN 1 Down",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan1_up_bytes_total[5m])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "LAN 1 Up",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan2_down_bytes_total[5m])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Lan 2 Down",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan2_up_bytes_total[5m])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "LAN 2 Up",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "(increase(vodafone_wifi_5ghz_down_bytes_total[5m]) + increase(vodafone_wifi_2_4ghz_down_bytes_total[5m]))",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Wifi Down",
+            "refId": "E"
+          },
+          {
+            "exemplar": true,
+            "expr": "(increase(vodafone_wifi_5ghz_up_bytes_total[5m]) + increase(vodafone_wifi_2_4ghz_up_bytes_total[5m]))",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Wifi Up",
+            "refId": "F"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan4_down_bytes_total[5m])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Lan 4 Down",
+            "refId": "G"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan4_up_bytes_total[5m])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "LAN 4 Up",
+            "refId": "H"
+          }
+        ],
+        "title": "LAN (5m)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 4,
+          "x": 0,
+          "y": 13
+        },
+        "id": 10,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.6",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan1_down_bytes_total[$__range])",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Down",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan1_up_bytes_total[$__range])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Up",
+            "refId": "B"
+          }
+        ],
+        "title": "LAN1",
+        "type": "piechart"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 4,
+          "x": 4,
+          "y": 13
+        },
+        "id": 24,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.6",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan2_down_bytes_total[$__range])",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Down",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan2_up_bytes_total[$__range])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Up",
+            "refId": "B"
+          }
+        ],
+        "title": "LAN 2",
+        "type": "piechart"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 4,
+          "x": 8,
+          "y": 13
+        },
+        "id": 18,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.6",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_wifi_5ghz_down_bytes_total[$__range]) + increase(vodafone_wifi_2_4ghz_down_bytes_total[$__range])",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Down",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_wifi_5ghz_up_bytes_total[$__range]) + increase(vodafone_wifi_2_4ghz_up_bytes_total[$__range])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Up",
+            "refId": "B"
+          }
+        ],
+        "title": "Wifi",
+        "type": "piechart"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "bytes"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "5 GHz"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "2.4 GHz"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 4,
+          "x": 12,
+          "y": 13
+        },
+        "id": 22,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_wifi_2_4ghz_up_bytes_total[$__range]) + increase(vodafone_wifi_2_4ghz_down_bytes_total[$__range])",
+            "interval": "",
+            "legendFormat": "2.4 GHz",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_wifi_5ghz_up_bytes_total[$__range]) + increase(vodafone_wifi_5ghz_down_bytes_total[$__range])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "5 GHz",
+            "refId": "B"
+          }
+        ],
+        "title": "Wifi 2.4 GHz and 5GHz",
+        "type": "piechart"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 4,
+          "x": 16,
+          "y": 13
+        },
+        "id": 14,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.6",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan3_down_bytes_total[$__range])",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Down",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan3_up_bytes_total[$__range])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Up",
+            "refId": "B"
+          }
+        ],
+        "title": "LAN 3",
+        "type": "piechart"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 4,
+          "x": 20,
+          "y": 13
+        },
+        "id": 23,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.6",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan4_down_bytes_total[$__range])",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Down",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "increase(vodafone_lan4_up_bytes_total[$__range])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Up",
+            "refId": "B"
+          }
+        ],
+        "title": "LAN4",
+        "type": "piechart"
+      }
+    ],
+    "refresh": "1m",
+    "schemaVersion": 32,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now/d",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Vodafone Statistics",
+    "uid": "statistics",
+    "version": 1
+  }

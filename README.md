@@ -12,6 +12,10 @@ The following metrics are exported:
 - `vodafone_wifi_5ghz_down_bytes_total`: total bytes downloaded/recieved for Wifi 5GHz
 - `vodafone_wifi_5ghz_up_bytes_total`: total bytes uploaded/transmited for Wifi 5GHz
 
+Includes an example with Grafana and Prometheus where you can see your metrics in a dashboard
+
+![Dashboard](https://i.ibb.co/rspgLP5/Screenshot-2022-03-21-at-00-20-11.png)
+
 # Português
 
 ## Descrição
@@ -53,9 +57,20 @@ Criar um ficheiro `.env` equivalente a `.env.example` com as configurações. As
 
  Para desactivar este multipliacdor é possível usar no `.env` a opção `DISABLE_WAN_MULTIPLER=true`.
 
+ ## Solução integrada de monitorização com Grafana e Prometheus
+
+Para efeitos de exemplo foi adicionado um exemplo com Grafana e Prometheus. O Prometheus guarda os dados do exporter e o Grafana tem um dashboard que mostra esses dados para mais fácil visualização. Para efeitos de exemplo foi assumido que a VBox está ligada na porta LAN3 (que foi excluída de alguns gráficos).
+
+Para lançar a solução completa usar o seguinte comando:
+`docker-compose -f docker-compose.dashboard.yml up -d`
+
+É possível aceder depois ao dashboard no seguinte endereço: 
+`http://<ip>:3000/d/statistics/vodafone-statistics`
+
+![Dashboard](https://i.ibb.co/rspgLP5/Screenshot-2022-03-21-at-00-20-11.png)
+
 ## Trabalho futuro:
 
-- Disponibilizar, via `docker-compose`, um Prometheus e um Grafana com um dashboard pré-configurado para ser possível visualizar os dados. Já o tenho mas preciso de trabalhar na automação do dashboard do Grafana.
 - Adicionar outras métricas como uptime, número de dispositivos ligados, entre outras.
 
 # English
