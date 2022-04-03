@@ -56,8 +56,10 @@ class VodafoneMetrics:
         """Metrics fetching loop"""
 
         while True:
-            self.fetch()
-            time.sleep(self.polling_interval_seconds)
+            try:
+                self.fetch()
+            finally:
+                time.sleep(self.polling_interval_seconds)
 
     def fetch(self):
         """
@@ -161,10 +163,23 @@ class VodafoneMetrics:
         regex=r"(?<=new\sstPacketInfo\()\".*?\",\"(\d+)\",\"\d+\",\"(\d+)\",\"\d+\"(?=\))"
         matches = re.findall(regex,html)
         # Position 0 is for down statistics while position 1 is for up statistics
-        self.wifi_2_4_bytes_down._value.set(int(matches[0][0]))
-        self.wifi_2_4_bytes_up._value.set(int(matches[0][1]))
-        self.wifi_5_bytes_down._value.set(int(matches[2][0]))
-        self.wifi_5_bytes_up._value.set(int(matches[2][1]))
+        wifi_2_4_down = int(matches[0][0])
+        wifi_2_4_up = int(matches[0][1])
+        wifi_5_down = int(matches[2][0])
+        wifi_5_up = int(matches[2][1])
+
+        # this is required because sometimes it seems that, for some reason, for wifi stats, the router returns 0 leading to Prometheus to interpret it as a counter reset
+        if (wifi_2_4_down > 0):
+            self.wifi_2_4_bytes_down._value.set(wifi_2_4_down)
+
+        if (wifi_2_4_up > 0):
+            self.wifi_2_4_bytes_up._value.set(wifi_2_4_up)
+
+        if (wifi_5_down > 0):
+            self.wifi_5_bytes_down._value.set(wifi_5_down)
+        
+        if (wifi_5_up > 0):
+            self.wifi_5_bytes_up._value.set(wifi_5_up)
 
     def build_counter_metric(self, stats_name, up_or_down):
         """
